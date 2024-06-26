@@ -1,0 +1,53 @@
+// Variables
+:root {
+  --ft-xl: 5rem;
+  --ft-l: 4rem;
+  --ft-m: 3rem;
+  --ft-s: 2rem;
+
+  --clr-ft-main: #000;
+  --clr-ft-sec: #828282;
+}
+
+// Initialization
+
+@import url('https://fonts.cdnfonts.com/css/sf-pro-display'); // SF Pro Display Font
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+h1{
+  font-size: var(--ft-xl);
+  color: var(--clr-ft-main);
+}
+
+h2{
+  font-size: var(--ft-l);
+  color: var(--clr-ft-main);
+}
+
+h3{
+  font-size: var(--ft-m);
+  color: var(--clr-ft-main);
+}
+
+p, a, li {
+  font-size: var(--ft-s);
+  color: var(--clr-ft-main);
+}
+
+a {
+  color: var(--clr-ft-main);
+}
+
+[class*="ft-sec"] {
+  color: var(--clr-ft-sec);
+}
