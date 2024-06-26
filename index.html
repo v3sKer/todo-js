@@ -8,13 +8,121 @@
 
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="shortcut icon" href="assets/img/logo.png" type="image/x-icon">
+
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> <!-- Boxicons -->
 </head>
 
 <body>
-  <h1>Header 1</h1>
-  <h2>Header 2</h2>
-  <h3>Header 3</h3>
-  <p>Paragraph</p> <a href="">Link</a>
+  <!-- New Task Modal -->
+  <dialog id="newtask-modal">
+    <div>
+
+      <!-- Modal header -->
+      <div class="modal-header">
+        <div class="form-cat-wrapper">
+          <p id="cat-btn" data-value="task">Task</p>
+          <p id="cat-btn" data-value="proj">Project</p>
+        </div>
+
+        <i id="modal-closebtn" class='bx bx-x'></i>
+      </div>
+
+      <!-- New task form (openned by default) -->
+      <div class="modal-form" id="task-form">        
+        <h3>New task</h3>
+
+        <form id="modal-form" action="">
+
+          <div class="form-section">
+            <label for="task-category">TASK CATEGORY</label>
+            <select name="task-category" id="task-category" class="clear-input" required>
+              <option value="individual" selected>Individual task</option>
+            </select>
+          </div>
+
+          <div class="form-section">
+            <label for="task-level">LEVEL</label>
+            <select name="task-level" id="task-level" class="clear-input" required>
+              <option value="low" selected>Low 🟢</option>
+              <option value="medium">Medium 🟡</option>
+              <option value="high">High 🔴</option>
+              <option value="critical">Critical 🚨</option>
+            </select>
+          </div>
+          
+          <div class="form-section">
+            <label for="form-name">NAME</label>
+            <input id="form-name" class="clear-input" type="text" minlength="2" required
+            placeholder="Refactor form validation system.">
+          </div>
+
+          <div class="form-section">
+            <label for="form-datetime">DATE & TIME</label>
+            <input id="form-datetime" class="clear-input" type="datetime-local" required minlength="1">
+          </div>
+
+          <div class="form-section">
+            <label for="form-description">DESCRIPTION</label>
+            <textarea name="form-description" id="form-description" class="clear-input"></textarea>
+          </div>
+
+          <button id="form-submit-btn">Create</button>
+
+        </form>
+      </div>
+
+      <!-- Modal new project form -->
+      <div class="modal-form" id="proj-form">   
+
+        <h3>New project</h3>
+
+        <form id="modal-form" action="">
+          
+          <div class="form-section">
+            <label for="form-proj-name">NAME</label>
+            <input id="form-proj-name" class="clear-input" type="text" minlength="2" placeholder="Dragon Repeller Game" required>
+          </div>
+
+          <div class="form-section">
+            <label for="form-repo">GIT REPOSITORY</label>
+            <input id="form-repo" class="clear-input" type="text" minlength="10" required
+              placeholder="https://github.com/v3sker/dragonrepeller"
+            >
+          </div>
+
+          <div class="form-section">
+            <label for="form-deadline">DEADLINE</label>
+            <input id="form-deadline" class="clear-input" type="datetime-local" required minlength="1">
+          </div>
+
+          <div class="form-section">
+            <label for="form-proj-description">DESCRIPTION</label>
+            <textarea name="form-proj-description" id="form-proj-description" class="clear-input"></textarea>
+          </div>
+
+          <button id="form-submit-btn">Create</button>
+
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Header section -->
+  <header>
+    <a href="index.html" class="ft-bold">Todo List</a>
+    <div class="header-tabs-wrapper">
+      <p id="tasks-tab-btn">Dashboard</p>
+      <p id="tasks-tab-btn">Tasks</p>
+      <p id="proj-tab-btn">Projects</p>
+    </div>
+
+    <button id="header-newtask-btn">New</button>
+  </header>
+
+  <!-- Main section -->
+  <main>
+
+  </main>
 
   <script src="assets/js/index.js"></script>
 </body>
