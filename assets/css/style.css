@@ -75,6 +75,13 @@ dialog {
   width: clamp(400px, 50%, 600px);
   border-radius: 18px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+dialog::-webkit-scrollbar {
+  display: none;
 }
 
 dialog div {
@@ -133,7 +140,6 @@ input {
   font-size: 1.6rem;
   border: 1px solid var(--clr-border-initial);
   width: min(350px, 100%);
-  margin-right: 36px;
   border-radius: 4px;
   transition: 0.33s;
 }
@@ -153,7 +159,6 @@ textarea {
   min-width: 100%;
   min-height: 33.6px;
   max-height: 150px;
-  margin-right: 36px;
   border-radius: 4px;
   transition: 0.33s;
 }

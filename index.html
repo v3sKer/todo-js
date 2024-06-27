@@ -31,19 +31,19 @@
       <div class="modal-form" id="task-form">        
         <h3>New task</h3>
 
-        <form id="modal-form" action="">
+        <form id="modal-form" action="/" data-value="task">
 
           <div class="form-section">
             <label for="task-category">TASK CATEGORY</label>
             <select name="task-category" id="task-category" class="clear-input" required>
-              <option value="individual" selected>Individual task</option>
+              <option value="individual">Individual task</option>
             </select>
           </div>
 
           <div class="form-section">
             <label for="task-level">LEVEL</label>
             <select name="task-level" id="task-level" class="clear-input" required>
-              <option value="low" selected>Low 🟢</option>
+              <option value="low">Low 🟢</option>
               <option value="medium">Medium 🟡</option>
               <option value="high">High 🔴</option>
               <option value="critical">Critical 🚨</option>
@@ -51,19 +51,18 @@
           </div>
           
           <div class="form-section">
-            <label for="form-name">NAME</label>
-            <input id="form-name" class="clear-input" type="text" minlength="2" required
-            placeholder="Refactor form validation system.">
+            <label for="task-name">NAME</label>
+            <input id="task-name" class="clear-input" type="text" minlength="2" required>
           </div>
 
           <div class="form-section">
-            <label for="form-datetime">DATE & TIME</label>
-            <input id="form-datetime" class="clear-input" type="datetime-local" required minlength="1">
+            <label for="task-datetime">DATE & TIME</label>
+            <input id="task-datetime" class="clear-input" type="datetime-local" minlength="1" required>
           </div>
 
           <div class="form-section">
-            <label for="form-description">DESCRIPTION</label>
-            <textarea name="form-description" id="form-description" class="clear-input"></textarea>
+            <label for="task-desc">DESCRIPTION</label>
+            <textarea id="task-desc" name="task-desc" class="clear-input"></textarea>
           </div>
 
           <button id="form-submit-btn">Create</button>
@@ -76,28 +75,28 @@
 
         <h3>New project</h3>
 
-        <form id="modal-form" action="">
+        <form id="modal-form" action="/" data-value="proj">
           
           <div class="form-section">
-            <label for="form-proj-name">NAME</label>
-            <input id="form-proj-name" class="clear-input" type="text" minlength="2" placeholder="Dragon Repeller Game" required>
+            <label for="proj-name">NAME</label>
+            <input id="proj-name" class="clear-input" type="text" minlength="2" 
+            placeholder="Dragon Repeller Game" required>
           </div>
 
           <div class="form-section">
-            <label for="form-repo">GIT REPOSITORY</label>
-            <input id="form-repo" class="clear-input" type="text" minlength="10" required
-              placeholder="https://github.com/v3sker/dragonrepeller"
-            >
+            <label for="proj-repo">GIT REPOSITORY</label>
+            <input id="proj-repo" class="clear-input" type="text" minlength="10" 
+            placeholder="https://github.com/v3sker/dragonrepeller">
           </div>
 
           <div class="form-section">
-            <label for="form-deadline">DEADLINE</label>
-            <input id="form-deadline" class="clear-input" type="datetime-local" required minlength="1">
+            <label for="proj-deadline">DEADLINE</label>
+            <input id="proj-deadline" class="clear-input" type="datetime-local" required minlength="1">
           </div>
 
           <div class="form-section">
-            <label for="form-proj-description">DESCRIPTION</label>
-            <textarea name="form-proj-description" id="form-proj-description" class="clear-input"></textarea>
+            <label for="proj-desc">DESCRIPTION</label>
+            <textarea name="proj-desc" id="proj-desc" class="clear-input"></textarea>
           </div>
 
           <button id="form-submit-btn">Create</button>
@@ -109,7 +108,7 @@
 
   <!-- Header section -->
   <header>
-    <a href="index.html" class="ft-bold">Todo List</a>
+    <a href="index.html" class="ft-bold">📋 Todo List</a>
     <div class="header-tabs-wrapper">
       <p id="tasks-tab-btn">Dashboard</p>
       <p id="tasks-tab-btn">Tasks</p>
