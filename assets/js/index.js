@@ -1,3 +1,7 @@
+// INIT GLOBAL VARIABLES
+
+let userTasks, userProjects, uniqueTaskID, uniqueProjID;
+
 /*
 
   TABS SECTION
@@ -55,7 +59,9 @@ function populateBackendWrapper() {
 
     if (userTasks.length === 0) {
       alertNoData(activeTab)
-    } else {
+    } 
+    
+    if (userTasks.length >= 1) {
       const table = document.createElement('table');
       table.setAttribute('id', 'task-table');
 
@@ -252,35 +258,31 @@ document.addEventListener('keydown', function(e) {
 
 */
 
-let uniqueTaskID = 0;
-let uniqueProjID = 0;
-
-let userTasks = [];
-let userProjects = [];
-
 // localStorage.setItem shorthand
 function writeData(localStorageItem, data) {
   localStorage.setItem(localStorageItem, JSON.stringify(data));
 }
 
 function getStoredData() {
-  userTasks = parseData('storedUserTasks');
-  userProjects = parseData('storedUserProjects');
-  uniqueTaskID = parseData('storedUniqueTaskID');
-  uniqueProjID = parseData('storedUniqueProjID');
+  userTasks = parseData('storedUserTasks', []);
+  userProjects = parseData('storedUserProjects', []);
+  uniqueTaskID = parseData('storedUniqueTaskID', 0);
+  uniqueProjID = parseData('storedUniqueProjID', 0);
 };
 
 getStoredData();
 
 // localStorage.getItem validation shorthand
-function parseData(localStorageItem) {
-  if (typeof localStorage.getItem(localStorageItem) !== 'undefinde'){
-    let output = JSON.parse(localStorage.getItem(localStorageItem));
-    console.log(`succesfull retrieve ${localStorageItem}`)
-    console.log(output);
+function parseData(localStorageItem, defaultValue) {
+  let output = localStorage.getItem(localStorageItem);
 
-    return output;
+  if (output !== null){
+    console.log(`succesfull retrieve ${localStorageItem}`)
+    console.log(JSON.parse(output));
+    return JSON.parse(output);
   };
+
+  return defaultValue;
 };
 
 function setStoredData() {
