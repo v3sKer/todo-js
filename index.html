@@ -120,11 +120,20 @@
 
   <!-- Header section -->
   <header>
-    <p id="dashboard-tab-btn" class="ft-bold">📋 Todo List</>
+    <p>📋 Todo List</p>
     <div class="header-tabs-wrapper">
-      <p id="dashboard-tab-btn">Dashboard</p>
-      <p id="tasks-tab-btn" class="tab-active">Tasks</p>
-      <p id="proj-tab-btn">Projects</p>
+      <p id="tab-btn" data-value="dashboard">Dashboard</p>
+      <p id="tab-btn" data-value="tasks">Tasks</p>
+      <p id="tab-btn" data-value="projects">Projects</p>
+    </div>
+
+    <div class="header-vertical-line"></div>
+
+    <div class="header-tools-wrapper">
+      <button id="header-tools-dropdown-btn"><i class='bx bx-dots-horizontal-rounded'></i></button>
+      <div class="header-tools-dropdown">
+        <p id="tools-deleteall-btn"><i class='bx bx-trash'></i> Delete all</p>
+      </div>
     </div>
 
     <button id="header-newtask-btn"><i class='bx bx-plus'></i> Create</button>

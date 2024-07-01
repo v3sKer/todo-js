@@ -7,13 +7,15 @@
 
   --clr-blue: #2381c4;
 
-
   --clr-bg-main: #fff;
   --clr-bg-sec: #fafbfc;
+  --clr-bg-blue: #e2f3fd;
+  --clr-bg-green: #e5f5e9;
 
   --clr-ft-main: #000;
   --clr-ft-sec: #828282;
   --clr-ft-white: #fff;
+  --clr-ft-blue: #136fff;
 
   --clr-border-main: #e0e0e0;
   --clr-border-initial: #e0e0e0;
@@ -279,24 +281,29 @@ header {
   border-bottom: 2px solid var(--clr-border-main);
 }
 
+header p {
+  user-select: none;
+  font-weight: 600;
+}
+
+// HEADER TABS
 .header-tabs-wrapper {
   display: flex;
   flex-direction: row;
-  gap: 24px;
-  padding: 0 24px 0 72px;
-  border-right: 2px solid #dadada;
-}
-
-#dashboard-tab-btn {
-  user-select: none;
+  gap: 8px;
+  padding: 0 16px 0 54px;
 }
 
 .header-tabs-wrapper p {
   cursor: pointer;
+  user-select: none;
   color: #606469;
   transition: 0.3s;
   font-size: 1.8rem;
   font-weight: 500;
+  width: fit-content;
+  padding: 6px 8px;
+  border-radius: 8px;
 }
 
 .header-tabs-wrapper p:hover {
@@ -304,6 +311,77 @@ header {
   transition: 0.3s;
 }
 
+.tab-active {
+  background-color: var(--clr-bg-blue);
+  color: var(--clr-ft-blue) !important;
+}
+
+.header-vertical-line {
+  height: 60%;
+  width: 2px;
+  background-color: #bcbcbc;
+}
+
+
+
+// HEADER TOOLS
+.header-tools-wrapper {
+  position: relative;
+  display: inline-block;
+  padding: 0 24px;
+}
+
+#header-tools-dropdown-btn {
+  background-color: #fff;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #606469;
+  font-size: 2.4rem;
+  font-weight: 500;
+  transition: 0.3s;
+  width: 24px;
+  height: 24px;
+}
+
+#header-tools-dropdown-btn:hover, #header-tools-dropdown-btn:focus {
+  color: var(--clr-ft-blue);
+  transition: 0.3s;
+}
+
+.header-tools-dropdown {
+  display: none;
+  position: absolute;
+  overflow: auto;
+  padding: 8px;
+  min-width: 150px;
+  background-color: #fff;
+  box-shadow: 0 0 8px rgba($color: #000000, $alpha: 0.15);  
+  border-radius: 8px;
+  z-index: 999;
+}
+
+.header-tools-dropdown p {
+  cursor: pointer;
+  font-size: 1.6rem;
+  font-weight: 500;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.header-tools-dropdown p:hover {
+  background-color: var(--clr-bg-blue);
+  color: var(--clr-ft-blue);
+}
+
+.header-tools-wrapper:hover .header-tools-dropdown{
+  display: block;
+}
+
+// 'CREATE' button
 #header-newtask-btn {
   margin-left: auto;
   height: 40px;
@@ -351,6 +429,13 @@ main {
   color: #606469;
   background-color: var(--clr-bg-sec);
   user-select: none;
+}
+
+.backend-wrapper-nodata {
+  color: var(--clr-ft-sec);
+  height: 80%;
+  text-align: center;
+  align-content: center;
 }
 
 #task-table {
@@ -435,12 +520,12 @@ main {
 }
 
 .task-status-inprog {
-  background-color: #e5f5e9;
+  background-color: var(--clr-bg-green);
   color: #3e9f52;
 }
 
 .task-status-start {
-  background-color: #e2f3fd;
+  background-color: var(--clr-bg-blue);
   color: var(--clr-blue);
 }
 
@@ -452,7 +537,7 @@ main {
 }
 
 .task-priority-normal {
-  background-color: #e5f5e9;
+  background-color: var(--clr-bg-green);
   color: #3e9f52;
 }
 
@@ -470,8 +555,4 @@ main {
   width: 20%;
   text-align: center;
   color: #38414d;
-}
-
-.task-normal {
-
 }

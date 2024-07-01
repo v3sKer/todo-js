@@ -1,33 +1,161 @@
 /*
 
-  MAIN RENDER SECTION
+  TABS SECTION
 
 */
 
-const tabDashboardBtn = document.querySelector('#dashboard-tab-btn');
-const tabTasksBtn = document.querySelector("#tasks-tab-btn");
-const tabProjBtn = document.querySelector("#proj-tab-btn");
-
 const HTMLMainSection = document.querySelector('main');
 
-function clearMain() {
-  const currentBackendWrapper = document.querySelector('.backend-wrapper');
-  if (currentBackendWrapper !== 'null') {currentBackendWrapper.remove};
-};
+const tabButtons = [...document.querySelectorAll('#tab-btn')];
+tabButtons[0].classList.add('tab-active');
+populateBackendWrapper();
 
-tabTasksBtn.addEventListener('click', () => {
-  clearMain();
-  renderTasks();
+tabButtons.map(item => {
+  item.addEventListener('click', () => {
+    setActiveTabButton(item);
+    populateBackendWrapper();
+  });
 });
 
-function renderTasks() {
+function setActiveTabButton(button) {
+  const activatedTabBtn = document.querySelector('.tab-active');
+  if (activatedTabBtn !== null) {activatedTabBtn.classList.remove('tab-active')};
+  button.classList.add('tab-active'); 
+};
+
+function getActiveTabButton() {return document.querySelector('.tab-active').dataset.value}
+
+function clearBackendWrapper() {
+  const currentBackendWrapper = document.querySelector('.backend-wrapper');
+  if (currentBackendWrapper !== null) {currentBackendWrapper.remove()};
+};
+
+function populateBackendWrapper() {
+  clearBackendWrapper();
+  const activeTab = getActiveTabButton();
+  const mainSection = document.querySelector('main');
   const backendWrapper = document.createElement('div');
   backendWrapper.classList.add('backend-wrapper');
-}
+
+  if (activeTab === 'dashboard'){
+    const backendHeader = document.createElement('h3');
+    backendHeader.textContent = 'Dashboard';
+    backendWrapper.appendChild(backendHeader);
+
+    const text = document.createElement('p');
+    text.classList.add('backend-wrapper-nodata');
+    text.textContent = `Work in progress.`;
+    backendWrapper.appendChild(text);
+  };
+
+  if (activeTab === 'tasks') {
+    const backendHeader = document.createElement('h3');
+    backendHeader.textContent = 'Tasks';
+    backendWrapper.appendChild(backendHeader);
+
+    if (userTasks.length === 0) {
+      alertNoData(activeTab)
+    } else {
+      const table = document.createElement('table');
+      table.setAttribute('id', 'task-table');
+
+      // THEAD
+      const thead = document.createElement('thead');
+      const theadRow = document.createElement('tr');
+      const theadCells = ['', 'TITLE', 'STATUS', 'PRIORITY', 'ESTIMATE', 'DEADLINE'];
+      theadCells.map(item => {
+        const th = document.createElement('th');
+        th.textContent = item;
+  
+        theadRow.appendChild(th);
+      });
+      thead.append(theadRow);
+
+      // TBODY
+      const tbody = document.createElement('tbody');
+      userTasks.map(item => {
+        let i = 1;
+
+        if (item.cat === 'individual') {
+          const trow = document.createElement('tr');
+          
+          const tdNum = document.createElement('td');
+          tdNum.textContent = i++;
+          trow.appendChild(tdNum);
+
+          const tdTitle = document.createElement('td');
+          tdTitle.textContent = `${item.title}`
+          trow.appendChild(tdTitle);
+
+          const tdStatus = document.createElement('td');
+          const tdStatusPara = document.createElement('p');
+          tdStatusPara.classList.add('task-status-start');
+          tdStatusPara.textContent = 'Not started';
+          tdStatus.appendChild(tdStatusPara);
+          trow.appendChild(tdStatus);
+
+          const tdPriority = document.createElement('td');
+          const tdPriorityPara = document.createElement('p');
+          const taskPriority = item.priority;
+          tdPriorityPara.classList.add(`task-priority-${taskPriority}`);
+          tdPriorityPara.textContent = taskPriority.charAt(0).toUpperCase() + taskPriority.slice(1);
+          tdPriority.appendChild(tdPriorityPara);
+          trow.appendChild(tdPriority);
+
+          const tdEstimate = document.createElement('td');
+          tdEstimate.textContent = item.estimate;
+          trow.appendChild(tdEstimate);
+
+          const tdDeadline = document.createElement('td');
+          const validatedDealine = new Date(item.deadline);
+          const months = ["January", "February", "March", "April", "May", "June", "July", "August", 
+            "September", "October", "November", "December"];
+          tdDeadline.textContent = `${validatedDealine.getDay()} ${months[validatedDealine.getMonth()]}, ${validatedDealine.getFullYear()}`;
+          trow.appendChild(tdDeadline);
+
+          tbody.appendChild(trow);
+        };
+      });
+
+      table.appendChild(thead);
+      table.appendChild(tbody);
+      backendWrapper.appendChild(table);
+    };
+  };
+
+  if (activeTab === 'projects') {
+    const backendHeader = document.createElement('h3');
+    backendHeader.textContent = 'Projects';
+    backendWrapper.appendChild(backendHeader);
+
+    if (userProjects.length === 0) {alertNoData(activeTab)};
+  };
+
+  function alertNoData(tab) {
+    const text = document.createElement('p');
+    text.classList.add('backend-wrapper-nodata');
+    text.textContent = `You don't have any ${tab}.`;
+    backendWrapper.appendChild(text);
+  };
+
+  mainSection.appendChild(backendWrapper);
+};
 
 /*
 
-  FORM RENDER SECTION
+  TOOLS SECTION
+
+*/
+
+const deleteAllBtn = document.querySelector('#tools-deleteall-btn');
+deleteAllBtn.addEventListener('click', () => {
+  resetStoredData();
+  location.reload();
+});
+
+/*
+
+  FORM SECTION
 
 */
 
@@ -58,7 +186,7 @@ function getActiveFormTabBtn() {
       populateActiveFormTab();
     });
   });
-}
+};
 
 function populateActiveFormTab() {
   [...document.querySelectorAll('.modal-form')].map(item => { 
@@ -130,31 +258,6 @@ let uniqueProjID = 0;
 let userTasks = [];
 let userProjects = [];
 
-class Task {
-  constructor(cat, title, priority, estimate, deadline, desc) {
-    this.cat = cat;
-    this.title = title;
-    this.priority = priority;
-    this.estimate = estimate;
-    this.deadline = deadline;
-    this.desc = desc;
-
-    this.taskID = uniqueTaskID++;
-  };
-};
-
-class Proj {
-  constructor(name, repo, deadline, desc) {
-    this.name = name;
-    this.repo = repo;
-    this.deadline = deadline;
-    this.desc = desc;
-
-    this.tasks = [];
-    this.projID = uniqueProjID++;
-  };
-};
-
 // localStorage.setItem shorthand
 function writeData(localStorageItem, data) {
   localStorage.setItem(localStorageItem, JSON.stringify(data));
@@ -197,7 +300,32 @@ function resetStoredData() {
 function clearErrors() {
   const errorsDisplay = document.querySelector('.form-errors');
   errorsDisplay.textContent = '';
-}
+};
+
+class Task {
+  constructor(cat, title, priority, estimate, deadline, desc) {
+    this.cat = cat;
+    this.title = title;
+    this.priority = priority;
+    this.estimate = estimate;
+    this.deadline = deadline;
+    this.desc = desc;
+
+    this.taskID = uniqueTaskID++;
+  };
+};
+
+class Proj {
+  constructor(name, repo, deadline, desc) {
+    this.name = name;
+    this.repo = repo;
+    this.deadline = deadline;
+    this.desc = desc;
+
+    this.tasks = [];
+    this.projID = uniqueProjID++;
+  };
+};
 
 // Actual form validation
 const modalForms = [...document.querySelectorAll('#modal-form')];
@@ -206,17 +334,24 @@ modalForms.map(item => {
     e.preventDefault();
 
     if(item.dataset.value === 'task') {
-      const catInput = document.querySelector('#task-category').value;
-      const priorityInput = document.querySelector('#task-priority').value;
-      const titleInput = document.querySelector('#task-title').value;
-      const estimateInput = document.querySelector('#task-time').value;
-      const deadlineInput = document.querySelector('#task-deadline').value;
-      const descInput = document.querySelector('#task-desc').value;
+      const cat = document.querySelector('#task-category').value;
+      const title = document.querySelector('#task-title').value;
+      const priority = document.querySelector('#task-priority').value;
+      const estimate = function() {
+        let estimateInput = document.querySelector('#task-time').value;
+        if (parseInt(estimateInput) === 1) {
+          return `${estimateInput} hour`
+        } else {
+          return `${estimateInput} hours` 
+        };
+      }();
+      const deadline = document.querySelector('#task-deadline').value;
+      const desc = document.querySelector('#task-desc').value;
 
-      const deadlineInputValiDate = new Date(deadlineInput);
+      const deadlineValiDate = new Date(deadline);
       const todaysValiDate = new Date();
 
-      if (deadlineInputValiDate < todaysValiDate) {
+      if (deadlineValiDate < todaysValiDate) {
         e.preventDefault();
         const errorsDisplay = document.querySelector('.form-errors');
         errorsDisplay.textContent = `* Can't create task with deadline in the past!`;
@@ -225,11 +360,12 @@ modalForms.map(item => {
       }
 
       const newItem = new Task(
-        catInput,
-        priorityInput,
-        titleInput,
-        deadlineInput,
-        descInput,
+        cat,
+        title,
+        priority,
+        estimate,
+        deadline,
+        desc,
       );
 
       userTasks.push(newItem);
@@ -268,6 +404,7 @@ modalForms.map(item => {
     };
 
     setStoredData();
+    populateBackendWrapper();
 
     newTaskModal.close();
     clearErrors();
