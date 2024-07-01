@@ -5,6 +5,12 @@
   --ft-m: 3rem;
   --ft-s: 2rem;
 
+  --clr-blue: #2381c4;
+
+
+  --clr-bg-main: #fff;
+  --clr-bg-sec: #fafbfc;
+
   --clr-ft-main: #000;
   --clr-ft-sec: #828282;
   --clr-ft-white: #fff;
@@ -67,8 +73,11 @@ a {
   text-decoration: underline;
 }
 
-// MAIN CSS
+[class*="bg-sec"]{
+  background-color: var(--clr-bg-sec);
+}
 
+// MAIN CSS
 
 /* -----------------------------------------
 
@@ -234,6 +243,11 @@ select:focus {
   box-shadow: 0 1px 2px rgba($color: #000000, $alpha: 0.1);
 }
 
+.form-errors {
+  font-size: 1.6rem;
+  color: rgb(255, 100, 100);
+}
+
 #form-submit-btn {
   margin: 8px 0 0;
   border: none;
@@ -269,14 +283,20 @@ header {
   display: flex;
   flex-direction: row;
   gap: 24px;
-  padding: 0 72px;
+  padding: 0 24px 0 72px;
+  border-right: 2px solid #dadada;
+}
+
+#dashboard-tab-btn {
+  user-select: none;
 }
 
 .header-tabs-wrapper p {
   cursor: pointer;
-  color: var(--clr-ft-sec);
+  color: #606469;
   transition: 0.3s;
   font-size: 1.8rem;
+  font-weight: 500;
 }
 
 .header-tabs-wrapper p:hover {
@@ -286,14 +306,22 @@ header {
 
 #header-newtask-btn {
   margin-left: auto;
+  height: 40px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   border: none;
-  padding: 8px 18px;
-  color: var(--clr-ft-white);
+  color: #fff;
   background-color: #000;
-  font-weight: 600;
+  font-weight: 800;
   border-radius: 6px;
   cursor: pointer;
   transition: 0.3s;
+}
+
+#header-newtask-btn i {
+  margin: auto;
 }
 
 #header-newtask-btn:hover {
@@ -303,9 +331,147 @@ header {
   transition: 0.3s;
 }
 
-// MAIN SECTION
+/*
+
+  MAIN SECTION
+
+*/
+
 main {
   height: 92svh;
 }
 
-// HOME TAB
+.backend-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.backend-wrapper h3 {
+  padding: 12px 24px;
+  color: #606469;
+  background-color: var(--clr-bg-sec);
+  user-select: none;
+}
+
+#task-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  border: 1px solid #e9ecf1;
+}
+
+#task-table thead, tbody, tr {
+  width: 100%;
+}
+
+#task-table thead {
+  background-color: var(--clr-bg-sec);
+}
+
+#task-table tbody {
+  background-color: #fff;
+}
+
+#task-table tr {
+  display: flex;
+}
+
+#task-table td, th {
+  border: 1px solid #e9ecf1;
+  padding: 12px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#task-table td, td p {
+  color: #38414d;
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+#task-table th {
+  font-size: 1.4rem;
+  color: #7a7d82;
+  user-select: none;
+}
+
+#task-table td:nth-child(1), th:nth-child(1) {
+  width: 50px;
+}
+
+#task-table td:nth-child(1) {
+  text-align: center;
+  color: var(--clr-ft-sec);
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+#task-table th:nth-child(2) {
+  flex-basis: 50%;
+}
+
+#task-table td:nth-child(2) {
+  justify-content: start;
+  flex-basis: 50%;
+  cursor: pointer;
+  font-weight: 600;
+  align-items: center;
+  gap: 12px;
+  transition: 0.3s;
+}
+
+#task-table td:nth-child(2):hover {
+  color: #0775c3;
+  transition: 0.3s;
+}
+
+[class*="task-status-"] {
+  width: fit-content;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.task-status-inprog {
+  background-color: #e5f5e9;
+  color: #3e9f52;
+}
+
+.task-status-start {
+  background-color: #e2f3fd;
+  color: var(--clr-blue);
+}
+
+[class*="task-priority-"] {
+  width: fit-content;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.task-priority-normal {
+  background-color: #e5f5e9;
+  color: #3e9f52;
+}
+
+.task-priority-high {
+  background-color: #ffefe4;
+  color: #e58c45;
+}
+
+#task-table th:is(:not(:nth-child(1), :nth-child(2))) {
+  width: 20%;
+  text-align: center;
+}
+
+#task-table td:is(:not(:nth-child(1), :nth-child(2))) {
+  width: 20%;
+  text-align: center;
+  color: #38414d;
+}
+
+.task-normal {
+
+}

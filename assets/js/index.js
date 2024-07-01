@@ -1,5 +1,29 @@
+/*
+
+  MAIN RENDER SECTION
+
+*/
+
+const tabDashboardBtn = document.querySelector('#dashboard-tab-btn');
 const tabTasksBtn = document.querySelector("#tasks-tab-btn");
 const tabProjBtn = document.querySelector("#proj-tab-btn");
+
+const HTMLMainSection = document.querySelector('main');
+
+function clearMain() {
+  const currentBackendWrapper = document.querySelector('.backend-wrapper');
+  if (currentBackendWrapper !== 'null') {currentBackendWrapper.remove};
+};
+
+tabTasksBtn.addEventListener('click', () => {
+  clearMain();
+  renderTasks();
+});
+
+function renderTasks() {
+  const backendWrapper = document.createElement('div');
+  backendWrapper.classList.add('backend-wrapper');
+}
 
 /*
 
@@ -39,7 +63,7 @@ function getActiveFormTabBtn() {
 function populateActiveFormTab() {
   [...document.querySelectorAll('.modal-form')].map(item => { 
     item.classList.add('modal-form-disabled'); // Make sure other forms are disabled
-  }) 
+  }); 
 
   if (getActiveFormTab() === 'task') {
     enableForm('task');
@@ -107,12 +131,14 @@ let userTasks = [];
 let userProjects = [];
 
 class Task {
-  constructor(cat, level, name, datetime, desc) {
+  constructor(cat, title, priority, estimate, deadline, desc) {
     this.cat = cat;
-    this.level = level;
-    this.name = name;
-    this.datetime = datetime;
+    this.title = title;
+    this.priority = priority;
+    this.estimate = estimate;
+    this.deadline = deadline;
     this.desc = desc;
+
     this.taskID = uniqueTaskID++;
   };
 };
@@ -123,56 +149,54 @@ class Proj {
     this.repo = repo;
     this.deadline = deadline;
     this.desc = desc;
+
     this.tasks = [];
     this.projID = uniqueProjID++;
   };
 };
-
-function getStoredData() {
-  if (typeof localStorage.storedUserTasks !== 'undefined') {
-    userTasks = JSON.parse(localStorage.storedUserTasks);
-    console.log('succesfull retrieve tasks');
-    console.log(userTasks);
-  };
-
-  if(typeof localStorage.storedUserProjects !== 'undefined') {
-    userProjects = JSON.parse(localStorage.storedUserProjects);
-    console.log('succesfull retrieve projs');
-    console.log(userProjects);
-  };
-
-  if (typeof localStorage.storedUniqueTaskID !== 'undefined') {
-    uniqueTaskID = JSON.parse(localStorage.storedUniqueTaskID);
-    console.log('succesfull retrieve unique taskid');
-    console.log(uniqueTaskID);
-  };
-
-  if (typeof localStorage.storedUniqueProjID !== 'undefined') {
-    uniqueProjID = JSON.parse(localStorage.storedUniqueProjID);
-    console.log('succesfull retrieve unique projid');
-    console.log(uniqueProjID);
-  };
-};
-
-getStoredData();
 
 // localStorage.setItem shorthand
 function writeData(localStorageItem, data) {
   localStorage.setItem(localStorageItem, JSON.stringify(data));
 }
 
+function getStoredData() {
+  userTasks = parseData('storedUserTasks');
+  userProjects = parseData('storedUserProjects');
+  uniqueTaskID = parseData('storedUniqueTaskID');
+  uniqueProjID = parseData('storedUniqueProjID');
+};
+
+getStoredData();
+
+// localStorage.getItem validation shorthand
+function parseData(localStorageItem) {
+  if (typeof localStorage.getItem(localStorageItem) !== 'undefinde'){
+    let output = JSON.parse(localStorage.getItem(localStorageItem));
+    console.log(`succesfull retrieve ${localStorageItem}`)
+    console.log(output);
+
+    return output;
+  };
+};
+
 function setStoredData() {
   writeData('storedUserTasks', userTasks);
   writeData('storedUserProjects', userProjects);
   writeData('storedUniqueTaskID', uniqueTaskID);
   writeData('storedUniqueProjID', uniqueProjID);
-}
+};
 
 function resetStoredData() {
   writeData('storedUserTasks', []);
   writeData('storedUserProjects', []);
   writeData('storedUniqueTaskID', 0);
   writeData('storedUniqueProjID', 0);
+};
+
+function clearErrors() {
+  const errorsDisplay = document.querySelector('.form-errors');
+  errorsDisplay.textContent = '';
 }
 
 // Actual form validation
@@ -180,28 +204,40 @@ const modalForms = [...document.querySelectorAll('#modal-form')];
 modalForms.map(item => {
   item.addEventListener('submit', (e) => {
     e.preventDefault();
-    console.log(`created ${item.dataset.value}`);
 
     if(item.dataset.value === 'task') {
       const catInput = document.querySelector('#task-category').value;
-      const levelInput = document.querySelector('#task-level').value;
-      const nameInput = document.querySelector('#task-name').value;
-      const datetimeInput = document.querySelector('#task-datetime').value;
+      const priorityInput = document.querySelector('#task-priority').value;
+      const titleInput = document.querySelector('#task-title').value;
+      const estimateInput = document.querySelector('#task-time').value;
+      const deadlineInput = document.querySelector('#task-deadline').value;
       const descInput = document.querySelector('#task-desc').value;
+
+      const deadlineInputValiDate = new Date(deadlineInput);
+      const todaysValiDate = new Date();
+
+      if (deadlineInputValiDate < todaysValiDate) {
+        e.preventDefault();
+        const errorsDisplay = document.querySelector('.form-errors');
+        errorsDisplay.textContent = `* Can't create task with deadline in the past!`;
+        deadlineInput.value = '';
+        return;
+      }
 
       const newItem = new Task(
         catInput,
-        levelInput,
-        nameInput,
-        datetimeInput,
+        priorityInput,
+        titleInput,
+        deadlineInput,
         descInput,
       );
 
       userTasks.push(newItem);
+      console.log(`created ${item.dataset.value}`);
 
       if (newItem.cat !== 'individual') {
         userProjects[newItem.cat].tasks.push(newItem.taskID);
-      }
+      };
     };
 
     if (item.dataset.value === 'proj') {
@@ -210,19 +246,31 @@ modalForms.map(item => {
       const deadlineInput = document.querySelector('#proj-deadline').value;
       const descInput = document.querySelector('#proj-desc').value;
 
+      // Actual actual form validation
+      const deadlineInputValiDate = new Date(deadlineInput);
+      const todaysValiDate = new Date();
+
+      if (deadlineInputValiDate < todaysValiDate) {
+        e.preventDefault();
+        const errorsDisplay = document.querySelector('.form-errors');
+        errorsDisplay.textContent = `* Can't create project with deadline in the past!`;
+        deadlineInput.value = '';
+        return;
+      }
+
       const newItem = new Proj(
         nameInput,
         repoInput,
         deadlineInput,  
         descInput
-      )
-
+      );
       userProjects.push(newItem);
-    }
+    };
 
     setStoredData();
 
     newTaskModal.close();
+    clearErrors();
     clearFormInputs();
   });
 });

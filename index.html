@@ -39,30 +39,38 @@
               <option value="individual">Individual task</option>
             </select>
           </div>
-
-          <div class="form-section">
-            <label for="task-level">LEVEL</label>
-            <select name="task-level" id="task-level" class="clear-input" required>
-              <option value="low">Low 🟢</option>
-              <option value="medium">Medium 🟡</option>
-              <option value="high">High 🔴</option>
-              <option value="critical">Critical 🚨</option>
-            </select>
-          </div>
           
           <div class="form-section">
-            <label for="task-name">NAME</label>
-            <input id="task-name" class="clear-input" type="text" minlength="2" required>
+            <label for="task-title">TITLE</label>
+            <input id="task-title" class="clear-input" type="text" minlength="2" required>
           </div>
 
           <div class="form-section">
-            <label for="task-datetime">DATE & TIME</label>
-            <input id="task-datetime" class="clear-input" type="datetime-local" minlength="1" required>
+            <label for="task-priority">PRIORITY</label>
+            <select name="task-priority" id="task-priority" class="clear-input" required>
+              <option value="normal">Normal 🟢</option>
+              <option value="high">High 🟡</option>
+              <option value="critical">Critical 🔴</option>
+            </select>
+          </div>
+
+          <div class="form-section">
+            <label for="task-time">ESTIMATE COMPLETION TIME (hours)</label>
+            <input id="task-time" class="clear-input" type="number" minlength="1" required>
+          </div>
+
+          <div class="form-section">
+            <label for="task-deadline">DEADLINE</label>
+            <input id="task-deadline" class="clear-input" type="datetime-local" minlength="1" required>
           </div>
 
           <div class="form-section">
             <label for="task-desc">DESCRIPTION</label>
             <textarea id="task-desc" name="task-desc" class="clear-input"></textarea>
+          </div>
+
+          <div class="form-errors">
+
           </div>
 
           <button id="form-submit-btn">Create</button>
@@ -99,6 +107,10 @@
             <textarea name="proj-desc" id="proj-desc" class="clear-input"></textarea>
           </div>
 
+          <div class="form-errors">
+            
+          </div>
+
           <button id="form-submit-btn">Create</button>
 
         </form>
@@ -108,19 +120,51 @@
 
   <!-- Header section -->
   <header>
-    <a href="index.html" class="ft-bold">📋 Todo List</a>
+    <p id="dashboard-tab-btn" class="ft-bold">📋 Todo List</>
     <div class="header-tabs-wrapper">
-      <p id="tasks-tab-btn">Dashboard</p>
-      <p id="tasks-tab-btn">Tasks</p>
+      <p id="dashboard-tab-btn">Dashboard</p>
+      <p id="tasks-tab-btn" class="tab-active">Tasks</p>
       <p id="proj-tab-btn">Projects</p>
     </div>
 
-    <button id="header-newtask-btn">New</button>
+    <button id="header-newtask-btn"><i class='bx bx-plus'></i> Create</button>
   </header>
 
   <!-- Main section -->
   <main>
-
+    <div class="backend-wrapper">
+      <h3>Tasks</h3>
+      <table id="task-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>TITLE</th>
+            <th>STATUS</th>
+            <th>PRIORITY</th>
+            <th>ESTIMATE</th>
+            <th>DEADLINE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-taskid="0">
+            <td>1</td>
+            <td><i class='bx bx-chevron-right'></i>Simple task</td>
+            <td><p class="task-status-start">Not started</p></td>
+            <td><p class="task-priority-normal">Normal</p></td>
+            <td>1 hour</td>
+            <td>30 June, 2024</td>
+          </tr>
+          <tr data-taskid="1">
+            <td>2</td>
+            <td><i class='bx bx-chevron-right'></i>Hard task</td>
+            <td><p class="task-status-inprog">In progress</p></td>
+            <td><p class="task-priority-high">High</p></td>
+            <td>10 hours</td>
+            <td>4 July, 2024</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </main>
 
   <script src="assets/js/index.js"></script>
