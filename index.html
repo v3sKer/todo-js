@@ -92,6 +92,15 @@
           </div>
 
           <div class="form-section">
+            <label for="proj-priority">PRIORITY</label>
+            <select name="proj-priority" id="proj-priority" class="clear-input" required>
+              <option value="normal">Normal 🟢</option>
+              <option value="high">High 🟡</option>
+              <option value="critical">Critical 🔴</option>
+            </select>
+          </div>
+
+          <div class="form-section">
             <label for="proj-repo">GIT REPOSITORY</label>
             <input id="proj-repo" class="clear-input" type="text" minlength="10" 
             placeholder="https://github.com/v3sker/dragonrepeller">

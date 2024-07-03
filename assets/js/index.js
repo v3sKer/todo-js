@@ -58,10 +58,10 @@ function populateBackendWrapper() {
     backendWrapper.appendChild(backendHeader);
 
     if (userTasks.length === 0) {
-      alertNoData(activeTab)
-    } 
+      alertNoData(activeTab);
+    };
     
-    if (userTasks.length >= 1) {
+    if (userTasks.length > 0) {
       const table = document.createElement('table');
       table.setAttribute('id', 'task-table');
 
@@ -90,7 +90,7 @@ function populateBackendWrapper() {
           trow.appendChild(tdNum);
 
           const tdTitle = document.createElement('td');
-          tdTitle.textContent = `${item.title}`
+          tdTitle.innerHTML = `<i class='bx bx-chevron-right'></i>${item.title}`
           trow.appendChild(tdTitle);
 
           const tdStatus = document.createElement('td');
@@ -135,6 +135,83 @@ function populateBackendWrapper() {
     backendWrapper.appendChild(backendHeader);
 
     if (userProjects.length === 0) {alertNoData(activeTab)};
+
+    if (userProjects.length > 0) {
+      const table = document.createElement('table');
+      table.setAttribute('id', 'proj-table');
+
+      // THEAD
+      const thead = document.createElement('thead');
+      const theadRow = document.createElement('tr');
+      const theadCells = ['', 'PROJECT NAME', 'PRIORITY', 'STATUS', 'REPOSITORY', 'DEADLINE'];
+      theadCells.map(item => {
+        const th = document.createElement('th');
+        th.textContent = item;
+  
+        theadRow.appendChild(th);
+      });
+      thead.append(theadRow);
+
+      // TBODY
+      const tbody = document.createElement('tbody');
+      userProjects.map(item => {
+        const trow = document.createElement('tr');
+        let i = 1;
+        
+        const tdNum = document.createElement('td');
+        tdNum.textContent = i++;
+        trow.appendChild(tdNum);
+
+        const tdTitle = document.createElement('td');
+        tdTitle.innerHTML = `<i class='bx bx-chevron-right'></i>${item.name}`
+        trow.appendChild(tdTitle);
+
+        
+        const tdPriority = document.createElement('td');
+        const tdPriorityPara = document.createElement('p');
+        const projPriority = item.priority;
+        tdPriorityPara.classList.add(`proj-priority-${projPriority}`);
+        tdPriorityPara.textContent = projPriority.charAt(0).toUpperCase() + projPriority.slice(1);
+        tdPriority.appendChild(tdPriorityPara);
+        trow.appendChild(tdPriority);
+
+        const tdStatus = document.createElement('td');
+        const tdStatusPara = document.createElement('p');
+        tdStatusPara.classList.add('proj-status-notstarted');
+        tdStatusPara.textContent = 'Not started';
+        tdStatus.appendChild(tdStatusPara);
+        trow.appendChild(tdStatus);
+        
+        const tdRepo = document.createElement('td');
+        if (item.repo.length > 0) {
+          const tdRepoLink = document.createElement('a');
+          tdRepoLink.classList.add('proj-repo');
+          tdRepoLink.href = item.repo;
+          tdRepoLink.setAttribute('target', '_blank');
+          tdRepoLink.textContent = 'Link';
+          tdRepo.appendChild(tdRepoLink);
+        } else {
+          const tdRepoPara = document.createElement('p');
+          tdRepoPara.classList.add('proj-no-repo');
+          tdRepoPara.textContent = 'No repository.'
+          tdRepo.appendChild(tdRepoPara);
+        }
+        trow.appendChild(tdRepo);
+
+        const tdDeadline = document.createElement('td');
+        const validatedDealine = new Date(item.deadline);
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", 
+          "September", "October", "November", "December"];
+        tdDeadline.textContent = `${validatedDealine.getDay()} ${months[validatedDealine.getMonth()]}, ${validatedDealine.getFullYear()}`;
+        trow.appendChild(tdDeadline);
+
+        tbody.appendChild(trow);
+      });
+
+      table.appendChild(thead);
+      table.appendChild(tbody);
+      backendWrapper.appendChild(table);
+    };
   };
 
   function alertNoData(tab) {
@@ -153,10 +230,66 @@ function populateBackendWrapper() {
 
 */
 
+function craeteConfirmationDialog(context) {
+  const HTMLbody = document.body;
+  const modal = document.createElement('dialog');
+  modal.setAttribute('id', 'confirm-modal');
+
+  const modalHeaderWrapper = document.createElement('div');
+  modalHeaderWrapper.classList.add('modal-header');
+
+  const modalHeaderH3 = document.createElement('h3');
+  modalHeaderH3.textContent = 'Confirm';
+
+  const modalHeaderCloseBtn = document.createElement('i');
+  modalHeaderCloseBtn.classList.add('bx', 'bx-x');
+  modalHeaderCloseBtn.addEventListener('click', () => {
+    modal.remove();
+  });
+
+  const modalContentWrapper = document.createElement('div');
+  modalContentWrapper.classList.add('modal-content');
+
+  if (context === 'deleteall') {
+    const modalHeaderPara = document.createElement('p');
+    modalHeaderPara.textContent = 'Do you really want to delete all tasks/projects?';
+    
+    modalContentWrapper.appendChild(modalHeaderPara);
+
+    const modalContentButtonsWrapper = document.createElement('div');
+    modalContentButtonsWrapper.classList.add('modal-content-buttons');
+
+    const cancelButton = document.createElement('button');
+    cancelButton.setAttribute('id', 'modal-cancel-btn');
+    cancelButton.textContent = 'Cancel';
+    cancelButton.addEventListener('click', () => modal.remove());
+
+    const confirmButton = document.createElement('button');
+    confirmButton.textContent = 'Confirm';
+    confirmButton.addEventListener('click', () => {
+      resetStoredData();
+      location.reload();
+    });
+
+    modalContentButtonsWrapper.appendChild(cancelButton);
+    modalContentButtonsWrapper.appendChild(confirmButton);
+    modalContentWrapper.appendChild(modalContentButtonsWrapper);
+  };
+
+
+  
+  modalHeaderWrapper.appendChild(modalHeaderH3);
+  modalHeaderWrapper.appendChild(modalHeaderCloseBtn);
+  modal.appendChild(modalHeaderWrapper);
+  modal.appendChild(modalContentWrapper);
+  HTMLbody.appendChild(modal);
+
+  modal.showModal();
+};
+
 const deleteAllBtn = document.querySelector('#tools-deleteall-btn');
 deleteAllBtn.addEventListener('click', () => {
-  resetStoredData();
-  location.reload();
+  craeteConfirmationDialog('deleteall');
 });
 
 /*
@@ -245,13 +378,6 @@ document.querySelector('#modal-closebtn').addEventListener('click', () => {
   clearFormInputs();
 });
 
-// Make sure ESC also clears modal forms on close
-document.addEventListener('keydown', function(e) {
-  if(e.key == 'Escape'){
-    clearFormInputs();
-  }
-});
-
 /*
 
   FORM VALIDATION
@@ -318,8 +444,9 @@ class Task {
 };
 
 class Proj {
-  constructor(name, repo, deadline, desc) {
+  constructor(name, priority, repo, deadline, desc) {
     this.name = name;
+    this.priority = priority;
     this.repo = repo;
     this.deadline = deadline;
     this.desc = desc;
@@ -340,11 +467,11 @@ modalForms.map(item => {
       const title = document.querySelector('#task-title').value;
       const priority = document.querySelector('#task-priority').value;
       const estimate = function() {
-        let estimateInput = document.querySelector('#task-time').value;
-        if (parseInt(estimateInput) === 1) {
-          return `${estimateInput} hour`
+        let estimate = document.querySelector('#task-time').value;
+        if (parseInt(estimate) === 1) {
+          return `${estimate} hour`
         } else {
-          return `${estimateInput} hours` 
+          return `${estimate} hours` 
         };
       }();
       const deadline = document.querySelector('#task-deadline').value;
@@ -379,16 +506,17 @@ modalForms.map(item => {
     };
 
     if (item.dataset.value === 'proj') {
-      const nameInput = document.querySelector('#proj-name').value;
-      const repoInput = document.querySelector('#proj-repo').value;
-      const deadlineInput = document.querySelector('#proj-deadline').value;
-      const descInput = document.querySelector('#proj-desc').value;
+      const name = document.querySelector('#proj-name').value;
+      const priority = document.querySelector('#proj-priority').value;
+      const repo = document.querySelector('#proj-repo').value;
+      const deadline = document.querySelector('#proj-deadline').value;
+      const desc = document.querySelector('#proj-desc').value;
 
       // Actual actual form validation
-      const deadlineInputValiDate = new Date(deadlineInput);
-      const todaysValiDate = new Date();
+      const deadlineValiDate = new Date(deadline);
+      const todayValiDate = new Date();
 
-      if (deadlineInputValiDate < todaysValiDate) {
+      if (deadlineValiDate < todayValiDate) {
         e.preventDefault();
         const errorsDisplay = document.querySelector('.form-errors');
         errorsDisplay.textContent = `* Can't create project with deadline in the past!`;
@@ -397,10 +525,11 @@ modalForms.map(item => {
       }
 
       const newItem = new Proj(
-        nameInput,
-        repoInput,
-        deadlineInput,  
-        descInput
+        name,
+        priority,
+        repo,
+        deadline,  
+        desc,
       );
       userProjects.push(newItem);
     };

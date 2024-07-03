@@ -264,6 +264,54 @@ select:focus {
 }
 
 
+// CONFIRM MODALS
+
+#confirm-modal {
+  height: fit-content;
+}
+
+.modal-content {
+  padding: 12px 0 0;
+}
+
+.modal-content-buttons {
+  padding: 12px 0 0;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.modal-content-buttons button {
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  width: 100%;
+  font-weight: 500;
+  font-size: 1.8rem;
+  color: #fff;
+  background-color: #000;
+  box-shadow: 0 0 6px rgba($color: #000000, $alpha: 0.2);
+  transition: 0.3s;
+}
+
+.modal-content-buttons button:hover {
+  background-color: #fff;
+  color: #000;
+  transition: 0.3s;
+}
+
+#modal-cancel-btn {
+  border: none;
+  background-color: #fff;
+  color: #000;
+}
+
+#modal-cancel-btn:hover {
+  background-color: #000;
+  color: #fff;
+}
+
 /* -----------------------------------------
 
   HEADER SECTION
@@ -347,7 +395,7 @@ header p {
   height: 24px;
 }
 
-#header-tools-dropdown-btn:hover, #header-tools-dropdown-btn:focus {
+.header-tools-wrapper:hover button i {
   color: var(--clr-ft-blue);
   transition: 0.3s;
 }
@@ -381,6 +429,7 @@ header p {
   display: block;
 }
 
+
 // 'CREATE' button
 #header-newtask-btn {
   margin-left: auto;
@@ -389,7 +438,6 @@ header p {
   display: flex;
   align-items: center;
   gap: 8px;
-  border: none;
   color: #fff;
   background-color: #000;
   font-weight: 800;
@@ -503,12 +551,12 @@ main {
   cursor: pointer;
   font-weight: 600;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   transition: 0.3s;
 }
 
 #task-table td:nth-child(2):hover {
-  color: #0775c3;
+  color: var(--clr-ft-blue);
   transition: 0.3s;
 }
 
@@ -552,6 +600,141 @@ main {
 }
 
 #task-table td:is(:not(:nth-child(1), :nth-child(2))) {
+  width: 20%;
+  text-align: center;
+  color: #38414d;
+}
+
+// PROJ TABLE 
+
+#proj-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  border: 1px solid #e9ecf1;
+}
+
+#proj-table thead, tbody, tr {
+  width: 100%;
+}
+
+#proj-table thead {
+  background-color: var(--clr-bg-sec);
+}
+
+#proj-table tbody {
+  background-color: #fff;
+}
+
+#proj-table tr {
+  display: flex;
+}
+
+#proj-table td, th {
+  border: 1px solid #e9ecf1;
+  padding: 12px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#proj-table td, td p, td a {
+  color: #38414d;
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+#proj-table th {
+  font-size: 1.4rem;
+  color: #7a7d82;
+  user-select: none;
+}
+
+#proj-table td:nth-child(1), th:nth-child(1) {
+  width: 50px;
+}
+
+#proj-table td:nth-child(1) {
+  text-align: center;
+  color: var(--clr-ft-sec);
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+#proj-table th:nth-child(2) {
+  flex-basis: 50%;
+}
+
+#proj-table td:nth-child(2) {
+  justify-content: start;
+  flex-basis: 50%;
+  cursor: pointer;
+  font-weight: 600;
+  align-items: center;
+  gap: 10px;
+  transition: 0.3s;
+}
+
+#proj-table td:nth-child(2):hover {
+  color: var(--clr-ft-blue);
+  transition: 0.3s;
+}
+
+[class*="proj-status-"] {
+  width: fit-content;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.proj-status-inprogress {
+  background-color: var(--clr-bg-green);
+  color: #3e9f52;
+}
+
+.proj-status-notstarted {
+  background-color: var(--clr-bg-blue);
+  color: var(--clr-blue);
+}
+
+[class*="proj-priority-"] {
+  width: fit-content;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.proj-priority-normal {
+  background-color: var(--clr-bg-green);
+  color: #3e9f52;
+}
+
+.proj-priority-high {
+  background-color: #ffefe4;
+  color: #e58c45;
+}
+
+.proj-no-repo {
+  color: var(--clr-ft-sec);
+  font-style: italic;
+}
+
+.proj-repo {
+  width: fit-content;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: var(--clr-bg-blue);
+  color: var(--clr-blue);
+}
+
+#proj-table th:is(:not(:nth-child(1), :nth-child(2))) {
+  width: 20%;
+  text-align: center;
+}
+
+#proj-table td:is(:not(:nth-child(1), :nth-child(2))) {
   width: 20%;
   text-align: center;
   color: #38414d;
